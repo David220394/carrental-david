@@ -1,0 +1,142 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Include header, including javascript and CSS files. -->
+<div th:replace="fragments/header :: header-head" />
+</head>
+
+<body style="text-align: center">
+	<!-- Main nav bar -->
+	<div th:replace="fragments/header :: header-nav" />
+
+	<!-- Secondary nav bar -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="collapse navbar-collapse" id="navbarColor03">
+			<!-- Search Form -->
+			<form th:action="@{/admin/customer/search}"
+				class="form-inline my-2 my-lg-0">
+				<input type="text" placeholder="National ID" name="nationalId"
+					class="form-control mr-sm-2" required="required"> <input type="submit"
+					value="Search" class="btn btn-secondary my-2 my-sm-0">
+			</form>
+
+			<!-- Display error message -->
+			<div th:if="${error}" style="margin-left: 10%;"
+				class="alert alert-dismissible alert-danger">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<span th:text="${error}"></span>
+			</div>
+		</div>
+
+	</nav>
+	<div>
+
+		<!-- Add Form -->
+		<div style="float: right; width: 35%; margin: 10px; padding: 10px;"
+			class="card border-primary mb-3">
+			<form th:action="@{/admin/customer/addCustomer}" method="post">
+				<h3>Add Customer</h3>
+				<table width="100%" cellpadding="10px">
+					<tr>
+						<td>National ID:</td>
+						<td><input type="text" name="nationalId" class="form-control"
+							required="required"></td>
+					</tr>
+					<tr>
+						<td>Password:</td>
+						<td><input type="password" name="password"
+							class="form-control" required="required"></td>
+					</tr>
+					<tr>
+						<td>Name:</td>
+						<td><input type="text" name="name" class="form-control"
+							required="required"></td>
+					</tr>
+					<tr>
+						<td>Gender:</td>
+						<td>
+							<div class="form-group">
+								<div style="text-align: left"
+									class="custom-control custom-radio">
+									<input type="radio" id="customRadio1" name="sex" value="male"
+										class="custom-control-input" checked=""> <label
+										class="custom-control-label" for="customRadio1">Male</label>
+								</div>
+								<div style="text-align: left"
+									class="custom-control custom-radio">
+									<input type="radio" id="customRadio2" name="sex" value="female"
+										class="custom-control-input"> <label
+										class="custom-control-label" for="customRadio2">Female</label>
+								</div>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>Date Of Birth:</td>
+						<td><input type="date" name="dateOfBirth"
+							class="form-control" required="required"></td>
+					</tr>
+					<tr>
+						<td style="text-align: right" colspan="2"><input
+							class="btn btn-primary" type="submit" value="ADD"></td>
+					</tr>
+				</table>
+			</form>
+			<br />
+		</div>
+
+		<!-- Customer Table -->
+		<div style="float: left; width: 60%">
+			<table
+				style="border-collapse: collapse; table-layout: fixed; width: 100%;">
+				<col style="width: 12.5%">
+				<col style="width: 12.5%">
+				<col style="width: 12.5%">
+				<col style="width: 12.5%">
+				<col style="width: 12.5%">
+				<col style="width: 5%">
+				<col style="width: 5%">
+				<col style="width: 5%">
+				<tr>
+					<th>NationalID</th>
+					<th>Password</th>
+					<th>Name</th>
+					<th>Gender</th>
+					<th>Date Of Birth</th>
+				</tr>
+				<tr th:each="customer : ${customers}">
+					<td style="height: 150px"><span
+						th:text="${customer.nationalId}" /></td>
+					<td style="word-wrap: break-word;"><span
+						style="position: relative; top: 50%; transform: translateY(-50%);"
+						th:text="${customer.password}" /></td>
+					<td><span
+						style="position: relative; top: 50%; transform: translateY(-50%);"
+						th:text="${customer.name}" /></td>
+					<td><span
+						style="position: relative; top: 50%; transform: translateY(-50%);"
+						th:text="${customer.sex}" /></td>
+					<td><span
+						style="position: relative; top: 50%; transform: translateY(-50%);"
+						th:text="${#dates.format(customer.dateOfBirth, 'dd-MMM-yyyy') }" />
+					</td>
+					<td style="width: 50%"><a
+						th:href="'/admin/customer/details/'+${customer.nationalId}"
+						title="Customer's Details" class="btn btn-primary"><span
+							class="oi oi-plus"></span></a></td>
+					<td><a
+						th:href="'/admin/customer/updatePage/'+${customer.nationalId}+'&'+${customer.name}"
+						title="Update Customer" class="btn btn-primary"><span
+							class="oi oi-pencil"></span></a></td>
+					<td><a
+						th:href="'/admin/customer/deleteCustomer/'+${customer.nationalId}"
+						title="Delete Customer" class="btn btn-primary"><span
+							class="oi oi-delete"></span></a></td>
+				</tr>
+
+			</table>
+		</div>
+	</div>
+
+</body>
+</html>

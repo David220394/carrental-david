@@ -1,0 +1,51 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Include header, including javascript and CSS files. -->
+<div th:replace="fragments/header :: header-head" />
+</head>
+<body>
+	<!-- Login form -->
+	<div class="container mt-4">
+		<div class="card col-sm-4 offset-md-4  box-shadow pt-2">
+
+			<div class="card-body">
+				<!-- POST login data to /login -->
+				<form class="form-signin" th:action="@{/login}" method="post">
+					<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+
+					<!-- Display error message -->
+					<div th:if="${param.error}"
+						class="alert alert-dismissible alert-danger">
+						<button type="button" class="close" data-dismiss="alert">&times;</button>
+						Invalid username and password.
+					</div>
+			</div>
+
+			<label for="username" class="sr-only">User</label> <input type="text"
+				id="username" name="username" class="form-control"
+				placeholder="User" required autofocus> <label for="password"
+				class="sr-only">Password</label> <input type="password"
+				id="password" name="password" class="form-control"
+				placeholder="Password" required>
+
+			<div class="checkbox mb-3">
+				<label> <input type="checkbox" value="remember-me">
+					Remember me
+				</label>
+			</div>
+
+			<button class="btn btn-primary" type="submit">Sign in</button>
+
+			<div class="alert alert-dismissible alert-primary"
+				style="font-size: 0.8rem">
+				<strong>Valid users:</strong> <br /> <em> admin/admin to log as
+					admin <br /> D123456789/qwerty to log as customer <br />
+				</em>
+			</div>
+			</form>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

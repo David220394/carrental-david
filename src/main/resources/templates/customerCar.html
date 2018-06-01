@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Include header, including javascript and CSS files. -->
+<div th:replace="fragments/header :: header-head" />
+</head>
+<body style="text-align: center">
+	<!-- Main nav bar -->
+	<div th:replace="fragments/header :: header-nav" />
+
+	<h1>Customer Details</h1>
+
+	<!-- Customer Detail Table -->
+	<table width="50%" style="margin-left: 25%; text-align: left">
+		<tr class="table-primary">
+			<th>National ID:</th>
+			<td th:text="${customer.nationalId}" />
+		</tr>
+		<tr class="table-light">
+			<th>Name:</th>
+			<td th:text="${customer.name}" />
+		</tr>
+		<tr class="table-primary">
+			<th>Gender:</th>
+			<td th:text="${customer.sex}" />
+		</tr>
+		<tr class="table-light">
+			<th>Date of Birth:</th>
+			<td th:text="${#dates.format(customer.dateOfBirth, 'dd-MMM-yyyy') }" />
+		</tr>
+	</table>
+	<h3>Car's Rented</h3>
+
+	<!-- Car Rented by Customer Table -->
+	<table width="75%" style="margin-left: 10px; text-align: center">
+
+		<tr>
+			<th>Registration Number</th>
+			<th>Model</th>
+			<th>Year</th>
+			<th>Price Per Day</th>
+		</tr>
+
+		<tr th:each="car : ${cars}">
+			<td th:text="${car.registrationNumber}" />
+			<td th:text="${car.model}" />
+			<td th:text="${car.year}" />
+			<td th:text="${car.pricePerDay}" />
+		</tr>
+	</table>
+	<button class="btn btn-primary"
+		style="float: right; margin-right: 10px;"
+		th:onclick="|window.location.href='/admin/customer/'|">Back</button>
+</body>
+</html>

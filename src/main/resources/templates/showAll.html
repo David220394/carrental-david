@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Include header, including javascript and CSS files. -->
+<div th:replace="fragments/header :: header-head" />
+</head>
+<body style="text-align: center">
+	<!-- Main nav bar. -->
+	<div th:replace="fragments/header :: header-nav" />
+
+	<!-- Secondary nav bar -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="collapse navbar-collapse" id="navbarColor03">
+
+			<!-- Search by registration number form -->
+			<div class="navbar-nav mr-auto">
+				<form class="form-inline my-2 my-lg-0"
+					th:action="@{/admin/car/search}">
+					<input class="form-control mr-sm-2" type="text"
+						placeholder="Registration Number" required="required"
+						name="registrationNumber" /> <br /> <input type="submit"
+						class="btn btn-secondary my-2 my-sm-0" value="Search" />
+				</form>
+			</div>
+
+			<!-- Display error message -->
+			<div th:if="${error}" class="alert alert-dismissible alert-danger"
+				style="margin-right: 20px;">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<span th:text="${error}"></span>
+			</div>
+
+			<!-- Search available car or rented car -->
+			<div>
+				<form class="form-inline my-2 my-lg-0"
+					th:action="@{/admin/car/filter}" method="post">
+					<div>
+						<small class="form-text text-muted" height="10"> <span
+							style="float: left">Start Date.</span>
+						</small> <input class="form-control mr-sm-2" type="date" name="sdate"
+							style="width: 100" placeholder="start Date" required="required" />
+
+					</div>
+					<div>
+						<small class="form-text text-muted" height="10"> <span
+							style="float: left">End Date.&nbsp;</span>
+						</small> <input class="form-control mr-sm-2" type="date"
+							required="required" name="edate" />
+					</div>
+					<div>
+						<small class="form-text text-muted" height="10">
+							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </small> <input type="submit"
+							name="rented" class="btn btn-secondary my-2 my-sm-0"
+							value="findRented" /> <input type="submit" name="available"
+							class="btn btn-secondary my-2 my-sm-0" value="findAvailable" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</nav>
+
+	<!-- Add Car Section -->
+	<div style="float: right; width: 35%; margin: 10px; padding: 10px;"
+		class="card border-primary mb-3">
+		<ul class="nav nav-tabs">
+			<li class="nav-item"><a class="nav-link" data-toggle="tab"
+				href="#add">Add Car</a></li>
+			<li class="nav-item"><a class="nav-link active show"
+				data-toggle="tab" href="#csv">Add CSV</a></li>
+		</ul>
+
+		<div id="myTabContent" class="tab-content">
+
+			<!-- Manual Add -->
+			<div class="tab-pane fade" id="add">
+				<form th:action="@{/admin/car/insertCar}" th:object="${carDto}"
+					method="post">
+					<table width="100%" cellpadding="10px">
+						<tr>
+							<td>Registration Number</td>
+							<td style="text-align: right"><input type="text"
+								name="registrationNumber" class="form-control"
+								required="required" /></td>
+						</tr>
+						<tr>
+							<td>Model</td>
+							<td><input type="text" name="model" class="form-control"
+								required="required" /></td>
+						</tr>
+						<tr>
+							<td>Year</td>
+							<td><input type="number" name="year" class="form-control"
+								required="required" /></td>
+						</tr>
+						<tr>
+							<td>Price per Day</td>
+							<td><input type="number" name="pricePerDay"
+								class="form-control" required="required" /></td>
+
+						</tr>
+						<tr>
+							<td colspan="2"><input type="submit" value="Submit"
+								class="btn btn-primary" /></td>
+						</tr>
+					</table>
+				</form>
+			</div>
+
+			<!-- Add By CSV -->
+			<div class="tab-pane fade active show" id="csv">
+				<form th:action="@{/admin/car/csv}" method="post"
+					enctype="multipart/form-data">
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" name="csv"
+							required="required" id="inputGroupFile02"> <label
+							class="custom-file-label" for="inputGroupFile02">Add CSV</label>
+					</div>
+					<div class="input-group-append">
+						<span id=""><input type="submit" value="Upload"
+							class="input-group-text" /></span>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- Table of cars -->
+	<div style="float: left; width: 50%">
+		<table>
+			<col style="width: 15%">
+			<col style="width: 15%">
+			<col style="width: 15%">
+			<col style="width: 15%">
+			<col style="width: 5%">
+			<col style="width: 5%">
+			<col style="width: 5%">
+			<tr>
+				<th>Registration Number</th>
+				<th>Model</th>
+				<th>Year</th>
+				<th>Price Per Day</th>
+			</tr>
+
+			<tr th:each="car : ${cars}">
+				<td th:text="${car.registrationNumber}" />
+				<td th:text="${car.model}" />
+				<td th:text="${car.year}" />
+				<td th:text="${car.pricePerDay}" />
+				<td><a title="Update Car" class="btn btn-primary"
+					th:href="'/admin/car/updatePage/'+${car.registrationNumber}"><span
+						class="oi oi-pencil"></span></a></td>
+				<td><a title="Delete Car" class="btn btn-primary"
+					th:href="'/admin/car/deleteCar/'+${car.registrationNumber}"><span
+						class="oi oi-delete"></span></a></td>
+				<td th:if="${available}"><a title="Rent Car"
+					class="btn btn-primary"
+					th:href="'/admin/rental/'+${car.registrationNumber}+'&'+${sdate}+'&'+${edate}"><span
+						class="oi oi-book"></span></a></td>
+			</tr>
+			<tr>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

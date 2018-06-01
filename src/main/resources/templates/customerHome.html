@@ -1,0 +1,99 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Include header, including javascript and CSS files. -->
+<div th:replace="fragments/header2 :: header2-head" />
+</head>
+<body style="text-align: center">
+	<!-- Main nav bar. -->
+	<div th:replace="fragments/header2 :: header2-nav" />
+
+<!-- Secondary nav bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			
+			<div>
+				<!-- Search Car Available Form -->
+				<form class="form-inline my-2 my-lg-0"
+					th:action="@{/customer/available}" method="get">
+					
+						<div>
+						<small class="form-text text-muted" height="10">
+						<span style="float:left">Start Date.</span>
+						</small>
+						<input
+							class="form-control mr-sm-2" type="date" name="sdate"
+							style="width: 100" value="${sdate}" required="required" /> 
+						</div>
+						<div>
+						<small class="form-text text-muted" height="10">
+						<span style="float:left">End Date.</span>
+						</small>
+						<input
+							class="form-control mr-sm-2" type="date" name="edate" value="${edate}" required="required"/>
+						</div>
+						<div>
+						<small class="form-text text-muted" height="10">
+						<span style="float:left">&nbsp;&nbsp;</span>
+						</small>
+						<input type="submit" name="available"
+							class="btn btn-secondary my-2 my-sm-0" value="Find Available Car" />
+						</div>
+				</form>
+				
+				<!-- Display error message -->
+			<div th:if="${error}" style="margin-left: 10%;"
+				class="alert alert-dismissible alert-danger">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<span th:text="${error}"></span>
+			</div>
+			</div>
+	</nav>
+
+	<!-- Display car that is available on the date selected -->
+	<div th:if="${available}" style=" margin:10px; padding:10px;" class="card border-primary mb-3">
+	<table>
+
+		<tr>
+			<th>Registration Number</th>
+			<th>Model</th>
+			<th>Year</th>
+			<th>Price Per Day</th>
+		</tr>
+
+		<tr th:each="car : ${cars}">
+			<td th:text="${car.registrationNumber}" />
+			<td th:text="${car.model}" />
+			<td th:text="${car.year}" />
+			<td th:text="${car.pricePerDay}" />
+			<td><a th:href="'/customer/confirmRent/'+${car.registrationNumber}+'&'+${sdate}+'&'+${edate}"><span class="oi oi-book"></span></a></td>
+		</tr>
+	</table>
+</div>
+
+	<!-- Table of rental done by this customer -->
+	<div style="margin:10px; padding:10px;" class="card border-primary mb-3">
+	<h3>Rental List</h3>
+	<table>
+		<tr>
+			<th>User Id</th>
+			<th>Car Id</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>Returned</th>
+			<th>Total Amount</th>
+		</tr>
+		<tr th:each="rental : ${rentals}">
+		<td th:text="${rental.users}"/>
+		<td th:text="${rental.car}"/>
+		<td th:text="${rental.startDate}"/>
+		<td th:text="${rental.endDate}"/>
+		<td th:text="${rental.returned}"/>
+		<td th:text="${rental.totalAmount}"/>
+		
+		</tr>
+	</table>
+	</div>
+
+
+</body>
+</html>

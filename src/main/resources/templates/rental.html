@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Include header, including javascript and CSS files. -->
+    <div th:replace="fragments/header :: header-head"/>
+</head>
+<body style="text-align:center">
+<!-- Main nav bar. -->
+<div th:replace="fragments/header :: header-nav"/>
+
+<!-- Secondary nav bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="collapse navbar-collapse" id="navbarColor03">
+
+<!-- Display error message -->
+			<div th:if="${error}" style="margin-left: 10%;"
+				class="alert alert-dismissible alert-danger">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
+				<span th:text="${error}"></span>
+			</div>
+  </div>
+</nav>
+
+	<!-- Add Rental Form -->
+	<div style="float: right; width: 35%; margin:10px; padding:10px;" class="card border-primary mb-3">
+	<form th:action="@{/admin/rental/addRental}" method="post">
+	<h3>Add Rental</h3>
+	<!-- When choosing allocate from car home -->
+		<table width="100%" cellpadding="10px" th:if="${allocate}">
+					<tr>
+						<td>User's National ID</td>
+						<td><select name="users">
+						<option th:each="user : ${users}" th:value="${user.nationalId}" th:text="${user.nationalId}"/>
+						</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Car's Registration Number</td>
+						<td><input type="text" name="car" th:value="${cars}" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td>Start Date</td>
+						<td><input type="text" name="startDate" th:value="${sdate}" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td>End Date</td>
+						<td><input type="text" name="endDate" th:value="${edate}" readonly="readonly"></td>
+					</tr>
+					<tr>
+						<td style="text-align:right" colspan="2"><input class="btn btn-primary" type="submit" value="ADD"></td>
+					</tr>
+				</table>
+		
+		<!-- Normal Rental Form -->
+		<table width="100%" cellpadding="10px" th:unless="${allocate}">
+					<tr>
+						<td>User's National ID</td><td><select name="users" class="custom-select">
+						<option th:each="user : ${users}" th:value="${user.nationalId}" th:text="${user.nationalId}"/>
+						</select>
+						</td>
+						</tr>
+					<tr>
+						<td>Car's Registration Number</td>
+						<td><select name="car" class="custom-select">
+						<option th:each="car : ${cars}" th:value="${car.registrationNumber}" th:text="${car.registrationNumber}"/>
+						</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Start Date</td>
+						<td><input type="date" name="startDate" class="form-control" required="required"></td>
+					</tr>
+					<tr>
+						<td>End Date</td>
+						<td><input type="date" name="endDate" class="form-control" required="required"></td>
+					</tr>
+					<tr>
+						<td style="text-align:right" colspan="2"><input class="btn btn-primary" type="submit" value="ADD"></td>
+					</tr>
+				</table>
+				<div th:if="${invalid}"  class="alert alert-dismissible alert-danger">
+  				<button type="button" class="close" data-dismiss="alert">&times;</button>
+  					<span th:text="${invalid}"></span>
+</div>
+			</form>
+			
+	</div>
+	
+	<!-- Rental Table -->
+	<div>
+	<table>
+		<col style="width:15%">
+		<col style="width:15%">
+		<col style="width:15%">
+		<col style="width:15%">
+		<col style="width:15%">
+		<col style="width:15%">
+		<col style="width:5%">
+		
+		<tr>
+			<th>User Id</th>
+			<th>Car Id</th>
+			<th>Start Date</th>
+			<th>End Date</th>
+			<th>Returned</th>
+			<th>Total Amount</th>
+		</tr>
+		<tr th:each="rental : ${rentals}">
+		<td th:text="${rental.users}"/>
+		<td th:text="${rental.car}"/>
+		<td th:text="${rental.startDate}"/>
+		<td th:text="${rental.endDate}"/>
+		<td th:text="${rental.returned}"/>
+		<td th:text="${rental.totalAmount}"/>
+		<td><a th:href="'/admin/rental/release/'+${rental.users}+'&'+${rental.car}+'&'+${rental.startDate}" class="btn btn-primary" title="Release Car"><span class="oi oi-share"></span></a></td>
+		</tr>
+	</table>
+	</div>
+</body>
+</html>

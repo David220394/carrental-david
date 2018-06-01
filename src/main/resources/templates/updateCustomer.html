@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Include header, including javascript and CSS files. -->
+<div th:replace="fragments/header :: header-head" />
+</head>
+<body style="text-align: center">
+	<!-- Main nav bar. -->
+	<div th:replace="fragments/header :: header-nav" />
+
+	<!-- Update Form -->
+	<div style="margin: 10px; padding: 10px; width: 50%"
+		class="card border-primary mb-3">
+		<form th:action="@{/admin/customer/update}" th:object="${customerDto}"
+			method="post">
+			<table width="100%" cellpadding="10px">
+				<tr>
+					<td>National Id</td>
+					<td><input class="form-control" type="text" name="nationalId"
+						th:value="${nationalId}" readonly="readonly" /></td>
+				</tr>
+				<tr>
+				<tr>
+					<td>Password:</td>
+					<td><input type="password" name="password"
+						class="form-control"></td>
+				</tr>
+				<tr>
+					<td>Name:</td>
+					<td><input type="text" name="name" th:value="${name}"
+						class="form-control"></td>
+				</tr>
+				<tr>
+					<td>Sex:</td>
+					<td>
+						<div class="form-group">
+							<div style="text-align: left" class="custom-control custom-radio">
+								<input type="radio" id="customRadio1" name="sex" value="male"
+									class="custom-control-input" checked=""> <label
+									class="custom-control-label" for="customRadio1">Male</label>
+							</div>
+							<div style="text-align: left" class="custom-control custom-radio">
+								<input type="radio" id="customRadio2" name="sex" value="female"
+									class="custom-control-input"> <label
+									class="custom-control-label" for="customRadio2">Female</label>
+							</div>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>Date Of Birth:</td>
+					<td><input type="date" name="dateOfBirth" class="form-control"></td>
+				</tr>
+				<tr>
+					<td style="text-align: right" colspan="2"><input
+						class="btn btn-secondary" type="submit" value="Update"></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<button class="btn btn-primary"
+		th:onclick="|window.location.href='/admin/customer/'|">Back</button>
+</body>
+</html>

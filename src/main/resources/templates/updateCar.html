@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Include header, including javascript and CSS files. -->
+<div th:replace="fragments/header :: header-head" />
+</head>
+<body style="text-align: center">
+	<!-- Main nav bar. -->
+	<div th:replace="fragments/header :: header-nav" />
+
+	<!-- Update Form -->
+	<div style="margin: 10px; padding: 10px; width: 50%"
+		class="card border-primary mb-3">
+		<h2>Update Form</h2>
+		<form th:action="@{/admin/car/update}" th:object="${carDto}"
+			method="post">
+			<table style="text-align: left">
+				<tr>
+					<td>Registration Number</td>
+					<td><input type="text" name="regNum" th:value="${regNum}"
+						readonly="readonly" /></td>
+				</tr>
+				<tr>
+					<td>Price per Day</td>
+					<td><input type="number" name="pricePerDay"
+						required="required" /></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="submit" value="Update"
+						class="btn btn-secondary" /></td>
+				</tr>
+			</table>
+		</form>
+
+	</div>
+	<a style="float: right; margin-right: 10px;"
+		class="btn btn-primary"
+		th:href="|window.location.href='/admin/car/show'|">Back</a>
+</body>
+
+</html>
